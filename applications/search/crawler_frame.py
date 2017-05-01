@@ -8,7 +8,7 @@ from time import time
 
 try:
     # For python 2
-    from urlparse import urlparse, parse_qs
+    from urlparse import urlparse, parse_qs, urljoin
 except ImportError:
     # For python 3
     from urllib.parse import urlparse, parse_qs
@@ -81,6 +81,14 @@ def process_url_group(group, useragentstr):
 STUB FUNCTIONS TO BE FILLED OUT BY THE STUDENT.
 '''
 def get_url_content(contentFile,baseUrl):
+    '''
+    Function returns a list, in links variable, of absolute url's from an HTML file provided by contentFile. The contentFile is associated 
+    with the baseUrl that it is linked to. BeautifulSoup will take the HTML content and use lxml as its main parser, extract all link tags 
+    and retrieve their url's from the href field. In this function it can be assumed baseUrl is valid and has content. Relative urls do not 
+    begin the http, https, www, prefix. It is usually started with a word, / , or ../ so this can be checked through string slicing. If relative
+    join it with the base url and add it to the list. If not the add it to the list as is.
+    This function does not check if the url's are duplicates or have crawler or bot issues, this handled by frontier.
+    '''
     filter_exp = "\.\."
     stripChars = "../"
     splitExceptions = ["/",""]
@@ -88,11 +96,11 @@ def get_url_content(contentFile,baseUrl):
     soup = BeautifulSoup(contentFile,"lxml")
     for item in soup.find_all('a'):
         foundUrl = item.get('href')
-        if foundUrl[0:3] == "../":
-            links.append(urlparse.urljoin(baseUrl,foundUrl.strip(stripChars)))
-        else:
-            links.append(foundUrl)
-    content.close()
+        if foundUrl != "" and foundUrl != "/":
+		if foundUrl[0:4] != "http" and foundUrl[0:3] != "www":
+			links.append(urljoin(baseUrl,foundUrl))
+		else:
+			links.append(foundUrl)
     return links
 def extract_next_links(rawDatas):
     outputLinks = list()
@@ -100,13 +108,13 @@ def extract_next_links(rawDatas):
         if data.http_code != 200:
             data.bad_url = True
         else:
-            baseUrl = obj.url
-            if obj.is_redirected == True:
-                baseUrl = obj.final_url
-                outputLinks.append(obj.final_url)
+            baseUrl = data.url
+            if data.is_redirected == True:
+                baseUrl = data.final_url
+                outputLinks.append(data.final_url)
             else:
-                outputLinks.append(obj.url)
-            otherLinks = get_url_content(obj.content,baseUrl)
+                outputLinks.append(data.url)
+            otherLinks = get_url_content(data.content,baseUrl)
             outputLinks += otherLinks
     '''
     rawDatas is a list of objs -> [raw_content_obj1, raw_content_obj2, ....]
