@@ -2,7 +2,7 @@ import logging
 from datamodel.search.datamodel import ProducedLink, OneUnProcessedGroup, robot_manager, Link
 from spacetime.client.IApplication import IApplication
 from spacetime.client.declarations import Producer, GetterSetter, Getter
-#from lxml import html,etree
+from lxml import html,etree
 import re, os
 from time import time
 
@@ -28,10 +28,10 @@ class CrawlerFrame(IApplication):
     def __init__(self, frame):
         self.starttime = time()
         # Set app_id <student_id1>_<student_id2>...
-        self.app_id = ""
+        self.app_id = "52192782_30392887_87654321"
         # Set user agent string to IR W17 UnderGrad <student_id1>, <student_id2> ...
         # If Graduate studetn, change the UnderGrad part to Grad.
-        self.UserAgentString = None
+        self.UserAgentString = "IR S17 UNDERGRAD 52192782 30392887 87654321"
 		
         self.frame = frame
         assert(self.UserAgentString != None)
@@ -69,7 +69,7 @@ def save_count(urls):
     url_count.update(urls)
     if len(urls):
         with open("successful_urls.txt", "a") as surls:
-            surls.write(("\n".join(urls) + "\n").encode("utf-8"))
+            surls.write(("\n". join(urls) + "\n").encode("utf-8"))
 
 def process_url_group(group, useragentstr):
     rawDatas, successfull_urls = group.download(useragentstr, is_valid)
@@ -80,8 +80,34 @@ def process_url_group(group, useragentstr):
 '''
 STUB FUNCTIONS TO BE FILLED OUT BY THE STUDENT.
 '''
+def get_url_content(contentFile,baseUrl):
+    filter_exp = "\.\."
+    stripChars = "../"
+    splitExceptions = ["/",""]
+    links = []
+    soup = BeautifulSoup(contentFile,"lxml")
+    for item in soup.find_all('a'):
+        foundUrl = item.get('href')
+        if foundUrl[0:3] == "../":
+            links.append(urlparse.urljoin(baseUrl,foundUrl.strip(stripChars)))
+        else:
+            links.append(foundUrl)
+    content.close()
+    return links
 def extract_next_links(rawDatas):
     outputLinks = list()
+    for data in rawDatas:
+        if data.http_code != 200:
+            data.bad_url = True
+        else:
+            baseUrl = obj.url
+            if obj.is_redirected == True:
+                baseUrl = obj.final_url
+                outputLinks.append(obj.final_url)
+            else:
+                outputLinks.append(obj.url)
+            otherLinks = get_url_content(obj.content,baseUrl)
+            outputLinks += otherLinks
     '''
     rawDatas is a list of objs -> [raw_content_obj1, raw_content_obj2, ....]
     Each obj is of type UrlResponse  declared at L28-42 datamodel/search/datamodel.py
@@ -101,8 +127,9 @@ def is_valid(url):
 
     This is a great place to filter out crawler traps.
     '''
+    queryChars = "[\?=+,]"
     parsed = urlparse(url)
-    if parsed.scheme not in set(["http", "https"]):
+    if (parsed.scheme not in set(["http", "https"])) or (url.find("?") != -1):
         return False
     try:
         return ".ics.uci.edu" in parsed.hostname \
@@ -111,6 +138,6 @@ def is_valid(url):
             + "|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso|epub|dll|cnf|tgz|sha1" \
             + "|thmx|mso|arff|rtf|jar|csv"\
             + "|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
-
+    
     except TypeError:
         print ("TypeError for ", parsed)
