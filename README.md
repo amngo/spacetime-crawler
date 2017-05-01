@@ -27,6 +27,13 @@ throwing any error
   python -m pip install --user cssselect
   python -m pip install --user html5lib
 ```
+
+## Execute a sample crawl
+  To run simulation of web crawling to up to 3000 urls in windows do, in Python folder:
+  ```
+  python spacetime-crawler/CopyCrawler.py -a amazon.ics.uci.edu -p 9050
+  ```
+  
 ## References
 * <a href="https://docs.python.org/2/library/htmllib.html#htmllib.HTMLParser.anchor_bgn" target="_blank" title="HTML parsing library">htmllib</a>: HTML Document Parser
 * <a href="https://docs.python.org/2/library/urlparse.html" target="_blank" title="Url parsing lib">urlparse</a>: Breaks down url 
