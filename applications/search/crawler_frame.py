@@ -111,9 +111,9 @@ def extract_next_links(rawDatas):
             baseUrl = data.url
             if data.is_redirected == True:
                 baseUrl = data.final_url
-                outputLinks.append(data.final_url)
-            else:
-                outputLinks.append(data.url)
+                # we do not need to put the base or final url back into the 
+                # frontier.
+                #outputLinks.append(data.final_url)
             otherLinks = get_url_content(data.content,baseUrl)
             outputLinks += otherLinks
     '''
