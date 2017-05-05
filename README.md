@@ -1,6 +1,30 @@
 # spacetime-crawler
 The crawler apps using spacetime library 
 
+# Analytics pseudocode
+1. Keep track of all the subdomains that it visited, and count how many different URLs it has processed from each of those subdomains
+
+Create global dictionary subDict
+Then in get_url_content()
+	subDict[baseUrl] = links.size
+We can assume all baseUrl are unique
+
+2. Count how many invalid links it received from the frontier, if any
+
+Create global invalidCounter
+
+in extract_next_links() under the line "data.bad_url = True"
+	invalidCounter += 1
+
+3. Find the page with the most out links (of all pages given to your crawler)
+
+Iterate through subDict keys for largest value
+
+4. Any additional things you may find interesting to keep track
+
+nope.com
+
+
 ## Installation 
 * Use Python 2.7
 * If you have pip installed already install. Then in this sequence 
