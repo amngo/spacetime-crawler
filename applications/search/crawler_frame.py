@@ -105,7 +105,8 @@ def get_url_content(contentFile,baseUrl):
 def extract_next_links(rawDatas):
     outputLinks = list()
     for data in rawDatas:
-        if data.http_code != 200:
+        # http://www.restapitutorial.com/httpstatuscodes.html
+        if data.http_code not in [200, 301,302,307]:
             data.bad_url = True
         else:
             baseUrl = data.url
