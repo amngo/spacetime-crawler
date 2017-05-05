@@ -142,6 +142,11 @@ def is_valid(url):
     crawler_traps = ['calendar.ics.uci.edu','archive.ics.uci.edu']
     if parsed.hostname in crawler_traps:
         return False
+    # to remove the urls that are ridiculously long. 
+    # 25 is an arbitrary number, we can change it to a more realistic number if needed.  
+    parts = url.split("/")
+    if len(parts) > 25:
+        return False
     
     try:
         return ".ics.uci.edu" in parsed.hostname \
