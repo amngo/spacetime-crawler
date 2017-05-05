@@ -139,6 +139,10 @@ def is_valid(url):
     parsed = urlparse(url)
     if (parsed.scheme not in set(["http", "https"])) or (url.find("?") != -1):
         return False
+    crawler_traps = ['calendar.ics.uci.edu','archive.ics.uci.edu']
+    if parsed.hostname in crawler_traps:
+        return False
+    
     try:
         return ".ics.uci.edu" in parsed.hostname \
             and not re.match(".*\.(css|js|bmp|gif|jpe?g|ico" + "|png|tiff?|mid|mp2|mp3|mp4"\
