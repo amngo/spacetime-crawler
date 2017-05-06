@@ -21,6 +21,22 @@ url_count = (set()
     set([line.strip() for line in open("successful_urls.txt").readlines() if line.strip() != ""]))
 MAX_LINKS_TO_DOWNLOAD = 3000
 
+
+def read_previous_max_outlinks():
+    directory = "analytics"
+    filename = "outlink_max.txt"
+    filepath = "{dir}/{filename}".format(dir=directory,filename=filename)
+    count =0
+    if os.path.exists(filepath):
+        with open(filePath, 'r',encoding="utf-8") as f:
+            line = f.readline()
+            if line:
+                count = line.split("::")[0]
+    return count
+
+PREVIOUS_MAX_LINKS = read_previous_max_outlinks()
+
+
 @Producer(ProducedLink, Link)
 @GetterSetter(OneUnProcessedGroup)
 class CrawlerFrame(IApplication):
@@ -108,6 +124,7 @@ def extract_next_links(rawDatas):
         # http://www.restapitutorial.com/httpstatuscodes.html
         if data.http_code not in [200, 301,302,307]:
             data.bad_url = True
+            writeToFile("invalid_links.txt", data.url+"\n", "a")
         else:
             baseUrl = data.url
             if data.is_redirected == True:
@@ -116,7 +133,13 @@ def extract_next_links(rawDatas):
                 # frontier.
                 #outputLinks.append(data.final_url)
             otherLinks = get_url_content(data.content,baseUrl)
+            if len(otherLinks)>PREVIOUS_MAX_LINKS:
+                PREVIOUS_MAX_LINKS = len(otherLinks)
+                writeToFile("outlink_max.txt", "{count}::{link}".format(count=PREVIOUS_MAX_LINKS, link=baseUrl, "w"))
             outputLinks += otherLinks
+            
+            handle_subdomain(baseUrl, otherLinks)
+            
     '''
     rawDatas is a list of objs -> [raw_content_obj1, raw_content_obj2, ....]
     Each obj is of type UrlResponse  declared at L28-42 datamodel/search/datamodel.py
@@ -128,6 +151,27 @@ def extract_next_links(rawDatas):
     Suggested library: lxml
     '''
     return outputLinks
+
+def handle_subdomain(baseUrl, otherLinks):
+    urlinfo = urlparse(baseUrl)
+    subdomain = urlinfo.hostname.split('.')[0]
+    directory = "analytics/subdomains"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    filename = "{subdomain}.txt".format(subdomain = subdomain)
+    filepath = "{dir}/{filename}".format(dir=directory,filename=filename)
+    with open(filePath, 'a+',encoding="utf-8") as f:
+        for link in otherLinks:
+            f.write(link+'\n')
+    
+def writeToFile(filename, content, mode):
+    directory = "analytics"
+    filePath = "{dir}/{filename}".format(dir=directory,filename=filename)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    with open(filePath, mode,encoding="utf-8") as f:
+        f.write(content)
+    
 
 def is_valid(url):
     '''
