@@ -21,3 +21,46 @@ Iterate through subDict keys for largest value
 4. Any additional things you may find interesting to keep track
 
 nope.com
+
+
+
+
+-------- alternate pseudocode-----
+
+1. Keep track of all the subdomains that it visited, and count how many different URLs it has processed from each of those subdomains
+
+- create a file for each subdomain on the harddisk.
+- append urls to the respective subdomain file.
+- write a simple script to count the unique urls in each of the subdomain files. 
+
+
+pros: a) every time we restart the client, we won't miss out on the previously crawled subdomains and urls.
+      b) light on memory. we are not storing anything in memory.
+
+cons: a) we need space on disk. But I think it wont be much as we are storing just text files.
+
+2. Count how many invalid links it received from the frontier, if any
+
+- create a file named invalid_links.txt
+- every time we receive an invalid link from the frontier ("data.bad_url = True"), we append it to the file.
+- write a simple script to count the unique links in the file.
+
+Pros: a) we wont lose information when we restart the crawler.
+
+3) Find the page with the most out links (of all pages given to your crawler)
+
+- we start with a file named outlink_max.txt 
+- when crawler starts, it reads the outlink_max.txt. 
+    if the file doesn't exist, previous_num_links=0. if the file exists, previos_num_links = number stored in the file. 
+- every time we extact links from the content page, we count the number of links. num_links = len(links)
+- if num_links > previous_num_links:
+      store the new url in the outlink_max.txt  e.g. (num_links::url). This replaces the previous entry in the file. 
+      previous_num_links = num_links
+
+Pros: a) same as above, we wont lose information during restarts.     
+
+4)  
+
+
+ 
+ 
