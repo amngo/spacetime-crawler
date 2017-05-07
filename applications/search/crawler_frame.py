@@ -6,6 +6,7 @@ from lxml import html,etree
 import re, os
 from time import time
 import codecs
+from bs4 import BeautifulSoup
 
 try:
     # For python 2
@@ -29,13 +30,13 @@ def read_previous_max_outlinks():
     filepath = "{dir}/{filename}".format(dir=directory,filename=filename)
     count =0
     if os.path.exists(filepath):
-        with codecs.open(filePath, 'r',encoding="utf-8") as f:
+        with codecs.open(filepath, 'r',encoding="utf-8") as f:
             line = f.readline()
             if line:
                 count = line.split("::")[0]
     return count
 
-def handle_subdomain(baseUrl, otherLinks):
+def handle_subdomain(baseUrl):
     urlinfo = urlparse(baseUrl)
     subdomain = urlinfo.hostname.split('.')[0]
     directory = "analytics/subdomains"
@@ -43,9 +44,8 @@ def handle_subdomain(baseUrl, otherLinks):
         os.makedirs(directory)
     filename = "{subdomain}.txt".format(subdomain = subdomain)
     filepath = "{dir}/{filename}".format(dir=directory,filename=filename)
-    with codecs.open(filePath, 'a+',encoding="utf-8") as f:
-        for link in otherLinks:
-            f.write(link+'\n')
+    with codecs.open(filepath, 'a+',encoding="utf-8") as f:
+        f.write(baseUrl+'\n')
     
 def writeToFile(filename, content, mode):
     directory = "analytics"
@@ -57,7 +57,7 @@ def writeToFile(filename, content, mode):
     
 
 
-PREVIOUS_MAX_LINKS = read_previous_max_outlinks()
+
 
 
 @Producer(ProducedLink, Link)
@@ -135,19 +135,20 @@ def get_url_content(contentFile,baseUrl):
     soup = BeautifulSoup(contentFile,"lxml")
     for item in soup.find_all('a'):
         foundUrl = item.get('href')
-        if foundUrl != "" and foundUrl != "/":
-		if foundUrl[0:4] != "http" and foundUrl[0:3] != "www":
-			links.append(urljoin(baseUrl,foundUrl))
-		else:
-			links.append(foundUrl)
+        if foundUrl and foundUrl != "" and foundUrl != "/":
+    		if foundUrl[0:4] != "http" and foundUrl[0:3] != "www":
+    			links.append(urljoin(baseUrl,foundUrl))
+    		else:
+    			links.append(foundUrl)
     return links
 def extract_next_links(rawDatas):
+    PREVIOUS_MAX_LINKS = read_previous_max_outlinks()
     outputLinks = list()
     for data in rawDatas:
         # http://www.restapitutorial.com/httpstatuscodes.html
-        if data.http_code not in [200, 301,302,307]:
+        if data.http_code not in ["200", "301","302","307"]:
             data.bad_url = True
-            writeToFile("invalid_links.txt", data.url+"\n", "a")
+            writeToFile("invalid_links.txt", data.url+ " :: "+data.http_code+"\n", "a")
         else:
             baseUrl = data.url
             if data.is_redirected == True:
@@ -161,7 +162,7 @@ def extract_next_links(rawDatas):
                 writeToFile("outlink_max.txt", "{count}::{link}".format(count=PREVIOUS_MAX_LINKS, link=baseUrl), "w")
             outputLinks += otherLinks
             
-            handle_subdomain(baseUrl, otherLinks)
+            handle_subdomain(baseUrl)
             
     '''
     rawDatas is a list of objs -> [raw_content_obj1, raw_content_obj2, ....]
