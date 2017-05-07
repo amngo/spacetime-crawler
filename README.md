@@ -79,3 +79,25 @@ throwing any error
 ## Functions Added
 * Located in spacetime-crawler/applications/search/crawler_frame.py, near bottom
 * Added/Modified Functions are: get_url_content, extract_next_links, is_valid. The file should have their documentation
+
+## Unique to this Branch
+* Has my changes in code or has commented what statements will be executed to perform analytics. The locations I have modified are:
+    * crawler.py in `if __name__ == "__main__"` section where the global dictionary in 
+    ```python
+       from applications.search.crawler_frame import CrawlerFrame, GLOBAL_DICT, URL_DICT
+       ##used for counting subdomains and logging other 
+       ##information, like invalids, redirects is imported.
+    ```
+    * There is also another dictionary, `URL_DICT` that would have each url as a key and its outlink as value. In the end the variable  
+      would sorted using 
+      ```python 
+        sortList = sorted(URL_DICT.items(),key = lambda item: (item[1] * -1, item[0]))
+        maxOutLink = sortLink[0] ##return key,value pair of url with highest outlink count
+      ```
+    * The other change I added or commented, (commented because I am having issues with the frontier right now), is in 
+      `crawler_frame.py`, I added the global logging variables and some functions that help log to them, including 
+      `countDomains(domain) , rejoinDomain(list), splitDomains(url), logtoDict(domainList, referenceDict) , checkforTrap(url),
+       and filterCD(url)`
+    * All those functions get used in `extract_next_links` and in crawler.py in <em>try, except, finally</em> block, the dictionary and 
+      function `makeOutputFile` will use the <strong>finalized dictionary objects</strong> and write them to a <em>file</em> in the 
+      `finally` block in the case of a keyboard or OS interrupt as well.
