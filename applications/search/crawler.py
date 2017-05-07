@@ -55,6 +55,7 @@ if __name__== "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--address', type=str, help='Address of the distributing server')
     parser.add_argument('-p', '--port', type=int, help='Port used by the distributing server')
-    args = parser.parse_args()
+    #args = parser.parse_args()
+    print "3"
     SetupLoggers()
-    sim = Simulation(args.address, args.port)
+    sim = Simulation("amazon.ics.uci.edu", "9050")
