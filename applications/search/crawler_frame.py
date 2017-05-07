@@ -147,6 +147,12 @@ def checkforTrap(url):
     if original - filtered > 4: ##Check difference between original list and filtered set.
         return True
     return False
+def filterOutId(url):
+    baseUrl = url
+    idIndex = url.find("#")
+    if idIndex != -1:
+        return baseUrl[0:idIndex]
+    return baseUrl
 def filterCD(url):
     '''
     Filter out ../ string url string, the return string is a string that contains all of the url before the first "../" expression
