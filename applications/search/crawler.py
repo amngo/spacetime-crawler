@@ -15,7 +15,7 @@ import uuid
 sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from spacetime.client.frame import frame
-from applications.search.crawler_frame import CrawlerFrame
+from applications.search.crawler_frame import CrawlerFrame, GLOBAL_DICT, URL_DICT, makeOutputFile
 
 logger = None
 
@@ -50,11 +50,23 @@ def SetupLoggers():
     clog.setFormatter(logging.Formatter('[%(name)s] %(message)s'))
     clog.setLevel(logging.DEBUG)
     logger.addHandler(clog)
-
 if __name__== "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--address', type=str, help='Address of the distributing server')
-    parser.add_argument('-p', '--port', type=int, help='Port used by the distributing server')
-    args = parser.parse_args()
-    SetupLoggers()
-    sim = Simulation(args.address, args.port)
+##    parser = argparse.ArgumentParser()
+##    parser.add_argument('-a', '--address', type=str, help='Address of the distributing server')
+##    parser.add_argument('-p', '--port', type=int, help='Port used by the distributing server')
+##    args = parser.parse_args()
+##    SetupLoggers()
+##    sim = Simulation(args.address, args.port)
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-a', '--address', type=str, help='Address of the distributing server')
+        parser.add_argument('-p', '--port', type=int, help='Port used by the distributing server')
+        args = parser.parse_args()
+        SetupLoggers()
+        sim = Simulation(args.address, args.port)
+    except:
+        print("OS or Keyboard Interrupt")
+    finally:
+        print("DONE")
+        ##makeOutputFile("logFile.txt",GLOBAL_DICT,URL_DICT)
+        
