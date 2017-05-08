@@ -2,3 +2,4 @@
 *.pydevproject
 *.project
 successful_urls.txt
+analytics*

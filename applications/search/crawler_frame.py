@@ -148,7 +148,7 @@ def extract_next_links(rawDatas):
         # http://www.restapitutorial.com/httpstatuscodes.html
         if data.http_code not in ["200", "301","302","307"]:
             data.bad_url = True
-            writeToFile("invalid_links.txt", data.url+ " :: "+data.http_code+"\n", "a")
+            writeToFile("invalid_links.txt","{link}::{code}\n".format(link=data.url, code=data.http_code), "a+")
         else:
             baseUrl = data.url
             if data.is_redirected == True:
