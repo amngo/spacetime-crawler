@@ -1,0 +1,63 @@
+Making a crawler log on 5 - 9 - 2017 at Time 12 : 6 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 0
+Domain/Subdomain: .uci.edu               Frequency: 0
+Domain/Subdomain: .edu                   Frequency: 0
+Total Redirects:  0
+Invalid URLs:  12 in total.
+Non-absolute Urls Crawled:  0
+Top url is:   at 0 outlinks.
+Making a crawler log on 5 - 9 - 2017 at Time 12 : 9 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 0
+Domain/Subdomain: .uci.edu               Frequency: 0
+Domain/Subdomain: .edu                   Frequency: 0
+Total Redirects:  0
+Invalid URLs:  25 in total.
+Non-absolute Urls Crawled:  0
+Top url is:   at 0 outlinks.
+Making a crawler log on 5 - 9 - 2017 at Time 12 : 14 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 0
+Domain/Subdomain: .uci.edu               Frequency: 0
+Domain/Subdomain: .edu                   Frequency: 0
+Total Redirects:  0
+Invalid URLs:  23 in total.
+Non-absolute Urls Crawled:  0
+Top url is:   at 0 outlinks.
+Making a crawler log on 5 - 9 - 2017 at Time 12 : 26 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 0
+Domain/Subdomain: .uci.edu               Frequency: 0
+Domain/Subdomain: .edu                   Frequency: 0
+Total Redirects:  0
+Invalid URLs:  524 in total.
+Non-absolute Urls Crawled:  0
+Top url is:   at 0 outlinks.
+Making a crawler log on 5 - 9 - 2017 at Time 12 : 38 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 0
+Domain/Subdomain: .uci.edu               Frequency: 0
+Domain/Subdomain: .edu                   Frequency: 0
+Total Redirects:  0
+Invalid URLs:  0 in total.
+Non-absolute Urls Crawled:  0
+Top url is:   at 0 outlinks.
+Making a crawler log on 5 - 9 - 2017 at Time 12 : 48 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 0
+Domain/Subdomain: .uci.edu               Frequency: 0
+Domain/Subdomain: .edu                   Frequency: 0
+Total Redirects:  0
+Invalid URLs:  0 in total.
+Non-absolute Urls Crawled:  0
+Top url is:   at 0 outlinks.
+Making a crawler log on 5 - 9 - 2017 at Time 12 : 53 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 0
+Domain/Subdomain: .uci.edu               Frequency: 0
+Domain/Subdomain: .edu                   Frequency: 0
+Total Redirects:  0
+Invalid URLs:  186 in total.
+Non-absolute Urls Crawled:  0
+Top url is:   at 0 outlinks.
