@@ -15,8 +15,11 @@ import uuid
 sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from spacetime.client.frame import frame
-from applications.search.crawler_frame import CrawlerFrame, GLOBAL_DICT, URL_DICT, makeOutputFile
-
+#from applications.search.crawler_frame import CrawlerFrame, makeOutputFile
+import applications.search.crawler_frame
+CrawlerFrame = applications.search.crawler_frame.CrawlerFrame
+makeOutputFile = applications.search.crawler_frame.makeOutputFile
+SUBDOMAINS = applications.search.crawler_frame.SUBDOMAINS
 logger = None
 
 class Simulation(object):
@@ -68,5 +71,8 @@ if __name__== "__main__":
         print("OS or Keyboard Interrupt")
     finally:
         print("DONE")
-        ##makeOutputFile("logFile.txt",GLOBAL_DICT,URL_DICT)
+        makeOutputFile("spacetime-crawler/logs/analytics.txt")
+        print(applications.search.crawler_frame.GLOBAL_DICT)
+        print(applications.search.crawler_frame.SUBDOMAINS)
+        print(applications.search.crawler_frame.COUNTER)
         
