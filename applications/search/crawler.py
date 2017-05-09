@@ -75,4 +75,16 @@ if __name__== "__main__":
         print(applications.search.crawler_frame.GLOBAL_DICT)
         print(applications.search.crawler_frame.SUBDOMAINS)
         print(applications.search.crawler_frame.COUNTER)
+    ########################################################
+    ## What my output looked like from print statements  ###
+    ## { 'invalids':186,'orig-relative':0,'redirects':0} ###
+    ## { '.ics.uci.edu':0,'.uci.edu':0 , '.edu':0} #########
+    ## { 'url': "", 'count': 0 } ###########################
+    ## In reality these dictionaries should be updated and #
+    ## not zero in the last output but they don't update ###
+    ## for some reason. The invalid url(HTTP ERROR i.e 404)#
+    ## gets logged but none of the other ones. Any help or #
+    ## suggestion at the would be great                #####
+    ########################################################
+        
         
