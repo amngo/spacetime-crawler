@@ -8,6 +8,10 @@ from time import time
 from bs4 import BeautifulSoup
 from datetime import datetime
 ## Above import is to make a unique log header for each file
+##GLOBAL Logging Dictionary variables
+GLOBAL_DICT = {"invalids":0,"redirects":0,"orig-relative":0}
+SUBDOMAINS = {".edu":0,".uci.edu":0,".ics.uci.edu":0}
+COUNTER = {"url":"","count":0}
 try:
     # For python 2
     from urlparse import urlparse, parse_qs, urljoin
@@ -18,19 +22,17 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 LOG_HEADER = "[CRAWLER]"
+##############################
+##CHANGE WHEN YOU TURN  IN####
+##############################
 url_count = (set() 
     if not os.path.exists("successful_urls.txt") else 
     set([line.strip() for line in open("successful_urls.txt").readlines() if line.strip() != ""]))
 MAX_LINKS_TO_DOWNLOAD = 3000
-TEST_DICT = {"PROMPT": "HI"} ## Was used for testing can be ommitted in final version
-GLOBAL_DICT = {"subdomains":{".edu":0},"invalids":0,"redirects":0,"orig-relative":0} ##Nested dictionary structure that has information on the whole webCrawl
+##Nested dictionary structure that has information on the whole webCrawl
 ########################################################################################
 ###GLOBAL_DICT["subdomain"] contains an inner dictionary which will have the subdomain count of all domains i.e. .edu, .uci.edu, .ics.uci.edu, .fano.ics.uci.edu
 ###GLOBAL_DICT["orig-relative"] counts amount of relative-urls encountered that had to be reformatted as absolute, can be taken out in final version
-URL_DICT = {}
-##URL_DICT has all unique urls as keys and their number of outlinks as value i.e. (URL_DICT = {"fano.ics.uci.edu/graphs.html":34})
-URL_INC = 0
-URL_OUT_ACCUM = 0
 @Producer(ProducedLink, Link)
 @GetterSetter(OneUnProcessedGroup)
 class CrawlerFrame(IApplication):
@@ -114,45 +116,42 @@ def splitDomains(url):
     '''
     baseUrl = url.split("/")[2].strip("www.") ###Separate directories and retrieve base url
     subdomains = baseUrl.split(".") ### Split into subdomain list
-    indexList = []
-    logtoDict(subdomains,global_dict) ### Use subdomain list to log to total count of all subdomains visited
-    return baseUrl
+    logtoDict(subdomains,SUBDOMAINS) ### Use subdomain list to log to total count of all subdomains visited
 
+    
 def logtoDict(domainList,referenceDict):
-    '''
-    Used to log and count the frequency of each subdomain in a url during the whole web crawling process.
-    Frequencies are added to referenceDict parameter
-    '''
-    end = len(domainList) ##Mark stopping point in recursively generating subdomains
-    for i in range(end,-1,-1): ## For every subdomain token
-        rejoined = rejoin(domainList[i : end]) ##Make a new concatenated subdomain string
-        if rejoined != '': ##Filter out empty string
-            if rejoined in referenceDict["subdomains"]: ##Increment subdomain frequency in the dictionary or add it to the diction in ["subdomains"] section
-                referenceDict["subdomains"][rejoined] += 1
+    end = len(domainList)
+    for i in range(end,-1,-1):
+        rejoined = rejoin(domainList[i : end])
+        if rejoined != '':
+            if rejoined in referenceDict:
+                referenceDict[rejoined] += 1
             else:
-                referenceDict["subdomains"][rejoined] = 1
-def prettyFormat(keyList):
-    for i in keyList:
-        domainStr = "Domain/Subdomain:  " + i[0]
-        freq = "Frequency:  " + str(i[1])
-        print("{0:<40} {1:>8}".format(domainStr,freq))
+                referenceDict[rejoined] = 1    
+##def logtoDict(domainList):
+##    '''
+##    Used to log and count the frequency of each subdomain in a url during the whole web crawling process.
+##    Frequencies are added to referenceDict parameter
+##    '''
+##    end = len(domainList) ##Mark stopping point in recursively generating subdomains
+##    for i in range(end,-1,-1): ## For every subdomain token
+##        rejoined = rejoin(domainList[i : end]) ##Make a new concatenated subdomain string
+##        if rejoined != "": ##Filter out empty string
+##            if SUBDOMAINS.has_key(rejoined): ##Increment subdomain frequency in the dictionary or add it to the diction in ["subdomains"] section
+##                SUBDOMAINS[rejoined] += 1
+##            else:
+##                SUBDOMAINS[rejoined] = 1
 def checkforTrap(url):
     '''
     Checks for crawler traps in the url usually contained by having "/data/directory/data/directory/data/directory/data/directory/data/directory/"
     patterns that lead strange pages. True for if it has this pattern and is a likely trap, False if not.
     ''' 
-    directories = filter(lambda item: item != '',url.split("/")) ##Split the url by directories
+    directories = filter(lambda item: item != "",url.split("/")) ##Split the url by directories
     original = len(directories) ## Count directories of original url
     filtered = len(set(directories)) ##Have a list of only the UNIQUE directories, many traps just infinitely copy the same directories in url
-    if original - filtered > 4: ##Check difference between original list and filtered set.
+    if original - filtered > 10: ##Check difference between original list and filtered set.
         return True
     return False
-def filterOutId(url):
-    baseUrl = url
-    idIndex = url.find("#")
-    if idIndex != -1:
-        return baseUrl[0:idIndex]
-    return baseUrl
 def filterCD(url):
     '''
     Filter out ../ string url string, the return string is a string that contains all of the url before the first "../" expression
@@ -164,7 +163,7 @@ def filterCD(url):
     else: ##If it does,  only return the part of the url UP TO that expression token.
         newUrl = url[0:matchObj.start()]
         return newUrl
-def makeOutputFile(fileName,crawlerDict,outDict):
+def makeOutputFile(fileName):
     '''
     Once all url's have been crawled. Use the global crawling dictionary and the url dictionary containing number of outlinks per url.
     Log all the information in a formatted manner to a file.
@@ -172,16 +171,15 @@ def makeOutputFile(fileName,crawlerDict,outDict):
     current =  datetime.today() ## Get and log date and time of the web crawl 
     baseStr = "Making a crawler log on " + str(current.month) + " - " + str(current.day) + " - " + str(current.year) + " at Time " + str(current.hour) + " : " + str(current.minute) + " \n"
     baseStr += "Subdomain Logs\n" ##Display subdomain frequencies from the crawlerDict parameter
-    for key in crawlerDict["subdomains"]:
+    for key in SUBDOMAINS:
         domainStr = "Domain/Subdomain: " + key
-        frequency = "Frequency: " + str(crawlerDict["subdomains"][key])
+        frequency = "Frequency: " + str(SUBDOMAINS[key])
         formatString = "{0:<40} {1:>8}".format(domainStr,frequency)
         baseStr += (formatString + "\n")
-    baseStr += ("Total Redirects:  " + str(crawlerDict["redirects"]) + "\n") ##Log redirect count
-    baseStr += ("Invalid URLs:  " + str(crawlerDict["invalid"]) + " in total.\n") ##Log invalid url count
-    baseStr += ("Non-absolute Urls Crawled:  " + str(crawlerDict["orig-relative"]) + "\n") ##Log total relative-urls encountered
-    listPairs = sorted(outDict.items(),key = lambda itm : (-1 * itm[1],itm[0]))
-    baseStr += ("Top url is:  " + listPairs[0][0] + " at " + str(listPairs[0][1]) + " outlinks.\n") ## Log url with most outlinks
+    baseStr += ("Total Redirects:  " + str(GLOBAL_DICT["redirects"]) + "\n") ##Log redirect count
+    baseStr += ("Invalid URLs:  " + str(GLOBAL_DICT["invalids"]) + " in total.\n") ##Log invalid url count
+    baseStr += ("Non-absolute Urls Crawled:  " + str(GLOBAL_DICT["orig-relative"]) + "\n") ##Log total relative-urls encountered
+    baseStr += ("Top url is:  " + COUNTER["url"]+ " at " + str(COUNTER["count"]) + " outlinks.\n") ## Log url with most outlinks
     log = open(fileName,"a") ##Open file for appending
     log.write(baseStr) ##Write all data
     log.close() ##Close file
@@ -199,40 +197,32 @@ def get_url_content(contentFile,baseUrl):
     splitExceptions = ["/",""]
     links = []
     soup = BeautifulSoup(contentFile,"lxml")
-    for item in soup.find_all('a'):
-        foundUrl = item.get('href')
-        if foundUrl != "/":
+    linkList = soup.find_all('a')
+    outCount = len(linkList)
+    for item in linkList:
+        foundUrl = filterCD(item.get('href')) ##f
+        if foundUrl != "/" and foundUrl != "":
             if foundUrl[0:4] != "http" and foundUrl[0:3] != "www":
-                links.append(urljoin(baseUrl,foundUrl))
-            else:
-                links.append(item.get('href'))
-####alternate body
-##    soup = BeautifulSoup(contentFile,"lxml")
-##    linkList = soup.find_all('a')
-##    outCount = len(linkList)
-##    if url not in URL_DICT:
-##        URL_DICT[url] = outCount
-##            foundUrl = filterCD(item.get('href')) ##f
-##            if foundUrl != "/":
-##            if foundUrl[0:4] != "http" and foundUrl[0:3] != "www":
-##                links.append(urljoin(baseUrl,foundUrl))
-##                GLOBAL_DICTS["orig-relative"] += 1
-##            else:
-##                links.append(foundUrl)      
+                foundUrl = urljoin(baseUrl,foundUrl)
+                GLOBAL_DICT["orig-relative"] += 1
+            links.append(foundUrl)
+    if outCount > COUNTER["count"]:
+                COUNTER["url"] = baseUrl
+                COUNTER["count"] = outCount
     return links
 def extract_next_links(rawDatas):
-    TEST_DICT["PROMPT"] = "Hello"
     validStatusCodes = [200,301,302,307]
     outputLinks = list()
     for data in rawDatas:
         if data.http_code not in validStatusCodes:
             data.bad_url = True
-            ##GLOBAL_DICT["invalid"] += 1 
+            GLOBAL_DICT["invalids"] += 1 
         else:
             baseUrl = data.url
+            splitDomains(baseUrl)
             if data.is_redirected == True:
+                GLOBAL_DICT["redirects"] += 1
                 baseUrl = data.final_url
-                ##GLOBAL_DICT["redirects"] += 1
             otherLinks = get_url_content(data.content,baseUrl)
             outputLinks += otherLinks
     '''
@@ -258,12 +248,12 @@ def is_valid(url):
     parsed = urlparse(url)
     crawler_traps = ['calendar.ics.uci.edu','archive.ics.uci.edu']
     parts = url.split("/")
-    if len(parts) >= 15: ##I have checked some of the traps this number should be shorter more like 11-15
+    if len(parts) >= 25: ##I have checked some of the traps this number should be shorter more like 11-15
         return False
-##    if (parsed.scheme not in set(["http", "https"])) or (url.find("?") != -1) or (checkforTrap(url) == True) or (re.match("doku.php") == True:
+    if (parsed.scheme not in set(["http", "https"])) or (url.find("?") != -1) or (checkforTrap(url) == True):
+        return False
+##    if (parsed.scheme not in set(["http", "https"])) or (url.find("?") != -1):
 ##        return False
-    if (parsed.scheme not in set(["http", "https"])) or (url.find("?") != -1):
-        return False
     try:
         return ".ics.uci.edu" in parsed.hostname \
             and not re.match(".*\.(css|js|bmp|gif|jpe?g|ico" + "|png|tiff?|mid|mp2|mp3|mp4"\
