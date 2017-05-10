@@ -33,6 +33,13 @@ throwing any error
   ```
   python spacetime-crawler/CopyCrawler.py -a amazon.ics.uci.edu -p 9050
   ```
+## Things to note when executing
+  It may take a while to get to 3000 because they have to be <strong>Successful</strong> URL downloads and as you have seen a lot
+  time you get many times so be patient. Before submission, the crawler will have to be run in the background to get to that number
+  in a sample run-through I got 743 in 37 minutes or in the log <em>2221.07 seconds</em>. 
+  If you want to demo the logging or other feature just use <strong>main_crawler.py</strong> or use a keyboard interrupt <em>Ctrl-
+  Z</em>as I had it  print out the stats and do the logging once termination, normal or through interrupt, occurred.
+  Sample Log file in /log/analytics.txt
   
 ## References
 * <a href="https://docs.python.org/2/library/htmllib.html#htmllib.HTMLParser.anchor_bgn" target="_blank" title="HTML parsing library">htmllib</a>: HTML Document Parser
