@@ -18,8 +18,8 @@ from spacetime.client.frame import frame
 #from applications.search.crawler_frame import CrawlerFrame, makeOutputFile
 import applications.search.crawler_frame
 CrawlerFrame = applications.search.crawler_frame.CrawlerFrame
-makeOutputFile = applications.search.crawler_frame.makeOutputFile
-SUBDOMAINS = applications.search.crawler_frame.SUBDOMAINS
+
+
 logger = None
 
 class Simulation(object):
@@ -68,13 +68,15 @@ if __name__== "__main__":
         SetupLoggers()
         sim = Simulation(args.address, args.port)
     except:
-        print("OS or Keyboard Interrupt")
+        print("OS or Keyboard Interrupt")##Debug print
     finally:
-        print("DONE")
-        makeOutputFile("spacetime-crawler/logs/analytics.txt")
-        print(applications.search.crawler_frame.GLOBAL_DICT)
-        print(applications.search.crawler_frame.SUBDOMAINS)
-        print(applications.search.crawler_frame.COUNTER)
+        print("DONE")##Debug print
+        applications.search.crawler_frame.makeOutputFile("spacetime-crawler/logs/analytics.txt")
+        ##Just debug print statements below can use for testing
+        ##print(applications.search.crawler_frame.analytics.mainDict)
+        ##print(applications.search.crawler_frame.analytics.domains)
+        ##print(applications.search.crawler_frame.analytics.maxUrl)
+        ##print(applications.search.crawler_frame.analytics.MAXCOUNT)
     ########################################################
     ## What my output looked like from print statements  ###
     ## { 'invalids':186,'orig-relative':0,'redirects':0} ###
