@@ -1,0 +1,9 @@
+Making a crawler log on 5 - 10 - 2017 at Time 13 : 36 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 742
+Domain/Subdomain: .uci.edu               Frequency: 742
+Domain/Subdomain: .edu                   Frequency: 742
+Total Redirects:  0
+Invalid URLs:  0 in total.
+Non-absolute Urls Crawled:  63236
+Top url is:  http://www.ics.uci.edu//ugrad/QA_Graduation/computing/account/sao/Course_updates.phpresources/index.phpdegrees/sao/degrees/computing/account/policies/resources/sao/degrees/courses/index.php at 127 outlinks.
