@@ -88,9 +88,9 @@ if __name__=="__main__":
 ##    print(crawler_frame.checkforTrap("http://www.ics.uci.edu/grad/policies/GradPolicies_GradStudentReview.php/faculty/about/equity/computing/admissions/Prospective_ApplicationProcess.php"))
 ##    logFile = open("newFile.txt","a")
     url = "http://fano.ics.uci.edu/cites/"
-    url2 = "http://www.ics.uci.edu/~eppstein/pix/fam4/TimAlex.html"
+    url2 = "http://fano.ics.uci.edu/cites/Publication/"
     redirect = "http://www.doorway.com"
-    url3 = "http://www.ics.uci.edu/~eppstein/pubs/2001.html"
+    url3 = "http://www.ics.uci.edu/dept/"
     dataObj1 = CopyData(url,200,"",False)
     dataObj2 = CopyData(url2,200,"nope",False)
     dataObj3 = CopyData(redirect,200,url3,True)
@@ -101,21 +101,44 @@ if __name__=="__main__":
 ##    print(crawler_frame.get_url_content(baseFile,url3))
 ##    baseContent.close()
 ##    print("DELIMITER!!!!\n\n\n\n\n\n\n")
-##    print(crawler_frame.extract_next_links([dataObj,dataObj2,dataObj3]))
-##    statement = crawler_frame.is_valid("https://duttgroup.ics.uci.edu?query=hello")
-##    print(statement)
+    crawler_frame.extract_next_links([dataObj1,dataObj2,dataObj3])
+    statement = crawler_frame.is_valid("https://duttgroup.ics.uci.edu?query=hello")
+    print(statement)
 ##    crawler.SetupLoggers()
 ##    c = crawler.Simulation("amazon.ics.uci.edu",9050)
-    returnList = crawler_frame.extract_next_links([dataObj1,dataObj2,dataObj3])
-    print(returnList)
-    urlFile = open("sample.txt","r")
+    urlFile = open("../successful_urls.txt","r")
     urlList = urlFile.readlines()
+    print("Total URLs is " + str(len(urlList)))
     urlFile.close()
     for i in urlList:
-        crawler_frame.splitDomains(i)
-    print(crawler_frame.GLOBAL_DICT)
-    print(crawler_frame.SUBDOMAINS)
-    print(crawler_frame.COUNTER)
-    crawler_frame.makeOutputFile("sampleAnalytics.txt")
+        crawler_frame.analytics.splitDomains(i)
+    print(crawler_frame.analytics.mainDict)
+    print(crawler_frame.analytics.domains)
+    print(crawler_frame.analytics.maxUrl)
+    print(crawler_frame.analytics.MAXCOUNT)
+    print(crawler_frame.RETRIEVE_COUNTER)
+    crawler_frame.makeOutputFile("sampleAnalytics.txt",crawler_frame.analytics)
+
+##Sample output on all links in successful_urls.txt
+##HELLO WELCOME TO THE MAIN FILE :D
+##Logger Testing
+##False
+##Total URLs is 742
+##{'invalids': 0, 'orig-relative': 2446, 'redirects': 1}
+##{'.ics.uci.edu': 745, '.uci.edu': 745, '.edu': 745, '.fano.ics.uci.edu': 2}
+##http://fano.ics.uci.edu/cites/Publication/
+##2407
+##3
+##Making a crawler log on 5 - 10 - 2017 at Time 13 : 47 
+##Subdomain Logs
+##Domain/Subdomain: .ics.uci.edu           Frequency: 745
+##Domain/Subdomain: .uci.edu               Frequency: 745
+##Domain/Subdomain: .edu                   Frequency: 745
+##Domain/Subdomain: .fano.ics.uci.edu      Frequency: 2
+##Total Redirects:  1
+##Invalid URLs:  0 in total.
+##Non-absolute Urls Crawled:  2446
+##Top url is:  http://fano.ics.uci.edu/cites/Publication/ at 2407 outlinks.
+
     
     
