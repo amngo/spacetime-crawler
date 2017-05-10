@@ -40,6 +40,8 @@ throwing any error
   If you want to demo the logging or other feature just use <strong>main_crawler.py</strong> or use a keyboard interrupt <em>Ctrl-
   Z</em>as I had it  print out the stats and do the logging once termination, normal or through interrupt, occurred.
   Sample Log file in /log/analytics.txt
+  <strong>NOTE</strong> when http codes like when retrieving from a server will come in as <em>bytes or strings</em> unless using a    
+  special library. So make sure to use `int(data.http_code)` to check validity. 
   
 ## References
 * <a href="https://docs.python.org/2/library/htmllib.html#htmllib.HTMLParser.anchor_bgn" target="_blank" title="HTML parsing library">htmllib</a>: HTML Document Parser
