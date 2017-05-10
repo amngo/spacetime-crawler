@@ -7,11 +7,10 @@ import re, os
 from time import time
 from bs4 import BeautifulSoup
 from datetime import datetime
+import GlobalAnalytics
 ## Above import is to make a unique log header for each file
 ##GLOBAL Logging Dictionary variables
-GLOBAL_DICT = {"invalids":0,"redirects":0,"orig-relative":0}
-SUBDOMAINS = {".edu":0,".uci.edu":0,".ics.uci.edu":0}
-COUNTER = {"url":"","count":0}
+
 try:
     # For python 2
     from urlparse import urlparse, parse_qs, urljoin
@@ -19,8 +18,12 @@ except ImportError:
     # For python 3
     from urllib.parse import urlparse, parse_qs
 
-
+analytics = GlobalAnalytics.AnalyticsObject()
+COUNTER = {"url":"","count":0}
+SUBDOMAINS = {}
+GLOBAL_DICT = {"invalids":0,"orig-relative":0,"redirects":0}
 logger = logging.getLogger(__name__)
+RETRIEVE_COUNTER = 0
 LOG_HEADER = "[CRAWLER]"
 ##############################
 ##CHANGE WHEN YOU TURN  IN####
@@ -101,46 +104,25 @@ def countDomains(domain):
             count += 1
     return count
 def rejoin(domainList):
-    '''
-    Take list of domains and recombine them into a string
-    '''
-    baseStr = ""
-    for i in domainList:
-        baseStr += i + "."
-    baseStr = "." + baseStr
-    return baseStr[0:len(baseStr) - 1]
-
-def splitDomains(url):
-    '''
-    Get baseUrl from url string to find subdomains. Input is always an ABSOLUTE url
-    '''
-    baseUrl = url.split("/")[2].strip("www.") ###Separate directories and retrieve base url
-    subdomains = baseUrl.split(".") ### Split into subdomain list
-    logtoDict(subdomains,SUBDOMAINS) ### Use subdomain list to log to total count of all subdomains visited
-
-    
-def logtoDict(domainList,referenceDict):
-    end = len(domainList)
-    for i in range(end,-1,-1):
-        rejoined = rejoin(domainList[i : end])
-        if rejoined != '':
-            if rejoined in referenceDict:
-                referenceDict[rejoined] += 1
-            else:
-                referenceDict[rejoined] = 1    
-##def logtoDict(domainList):
-##    '''
-##    Used to log and count the frequency of each subdomain in a url during the whole web crawling process.
-##    Frequencies are added to referenceDict parameter
-##    '''
-##    end = len(domainList) ##Mark stopping point in recursively generating subdomains
-##    for i in range(end,-1,-1): ## For every subdomain token
-##        rejoined = rejoin(domainList[i : end]) ##Make a new concatenated subdomain string
-##        if rejoined != "": ##Filter out empty string
-##            if SUBDOMAINS.has_key(rejoined): ##Increment subdomain frequency in the dictionary or add it to the diction in ["subdomains"] section
-##                SUBDOMAINS[rejoined] += 1
-##            else:
-##                SUBDOMAINS[rejoined] = 1
+        baseStr = ""
+        for i in domainList:
+            baseStr += (i + ".")
+        baseStr = "." + baseStr
+        answer = baseStr[0:(len(baseStr) - 1)]
+        return answer
+def splitDomains(url,reference):
+        baseUrl = url.split("/")[2].strip("www.") ###Separate directories and retrieve base url
+        subdomains = baseUrl.split(".") ### Split into subdomain list
+        logtoDict(subdomains,reference)
+def logtoDict(domainList,reference):
+        end = len(domainList)
+        for i in range(end,-1,-1):
+            rejoined = rejoin(domainList[i : end])
+            if rejoined != '':
+                if rejoined in reference.domains:
+                    reference.domains[rejoined] += 1
+                else:
+                    reference.domains[rejoined] = 1
 def checkforTrap(url):
     '''
     Checks for crawler traps in the url usually contained by having "/data/directory/data/directory/data/directory/data/directory/data/directory/"
@@ -149,21 +131,24 @@ def checkforTrap(url):
     directories = filter(lambda item: item != "",url.split("/")) ##Split the url by directories
     original = len(directories) ## Count directories of original url
     filtered = len(set(directories)) ##Have a list of only the UNIQUE directories, many traps just infinitely copy the same directories in url
-    if original - filtered > 10: ##Check difference between original list and filtered set.
+    if original - filtered > 5: ##Check difference between original list and filtered set.
         return True
     return False
 def filterCD(url):
     '''
     Filter out ../ string url string, the return string is a string that contains all of the url before the first "../" expression
     '''
-    filter_exp = r'\.\./' 
-    matchObj = re.search(filter_exp,url) ##Check if url has expression
-    if matchObj == None: ##If not return original and do not modifiy
+    try:
+        filter_exp = r'\.\./' 
+        matchObj = re.search(filter_exp,url) ##Check if url has expression
+        if matchObj == None: ##If not return original and do not modifiy
+            return url
+        else: ##If it does,  only return the part of the url UP TO that expression token.
+            newUrl = url[0:matchObj.start()]
+            return newUrl
+    except TypeError:
         return url
-    else: ##If it does,  only return the part of the url UP TO that expression token.
-        newUrl = url[0:matchObj.start()]
-        return newUrl
-def makeOutputFile(fileName):
+def makeOutputFile(fileName,obj):
     '''
     Once all url's have been crawled. Use the global crawling dictionary and the url dictionary containing number of outlinks per url.
     Log all the information in a formatted manner to a file.
@@ -171,19 +156,20 @@ def makeOutputFile(fileName):
     current =  datetime.today() ## Get and log date and time of the web crawl 
     baseStr = "Making a crawler log on " + str(current.month) + " - " + str(current.day) + " - " + str(current.year) + " at Time " + str(current.hour) + " : " + str(current.minute) + " \n"
     baseStr += "Subdomain Logs\n" ##Display subdomain frequencies from the crawlerDict parameter
-    for key in SUBDOMAINS:
+    for key in obj.domains:
         domainStr = "Domain/Subdomain: " + key
-        frequency = "Frequency: " + str(SUBDOMAINS[key])
+        frequency = "Frequency: " + str(obj.domains[key])
         formatString = "{0:<40} {1:>8}".format(domainStr,frequency)
         baseStr += (formatString + "\n")
-    baseStr += ("Total Redirects:  " + str(GLOBAL_DICT["redirects"]) + "\n") ##Log redirect count
-    baseStr += ("Invalid URLs:  " + str(GLOBAL_DICT["invalids"]) + " in total.\n") ##Log invalid url count
-    baseStr += ("Non-absolute Urls Crawled:  " + str(GLOBAL_DICT["orig-relative"]) + "\n") ##Log total relative-urls encountered
-    baseStr += ("Top url is:  " + COUNTER["url"]+ " at " + str(COUNTER["count"]) + " outlinks.\n") ## Log url with most outlinks
-    log = open(fileName,"a") ##Open file for appending
-    log.write(baseStr) ##Write all data
-    log.close() ##Close file
-def get_url_content(contentFile,baseUrl):
+    baseStr += ("Total Redirects:  " + str(obj.mainDict["redirects"]) + "\n") ##Log redirect count
+    baseStr += ("Invalid URLs:  " + str(obj.mainDict["invalids"]) + " in total.\n") ##Log invalid url count
+    baseStr += ("Non-absolute Urls Crawled:  " + str(obj.mainDict["orig-relative"]) + "\n") ##Log total relative-urls encountered
+    baseStr += ("Top url is:  " + obj.maxUrl + " at " + str(obj.MAXCOUNT) + " outlinks.\n") ## Log url with most outlinks
+    print(baseStr)
+##    log = open(fileName,"a") ##Open file for appending
+##    log.write(baseStr) ##Write all data
+##    log.close() ##Close file
+def get_url_content(contentFile,baseUrl,analyticsObj):
     '''
     Function returns a list, in links variable, of absolute url's from an HTML file provided by contentFile. The contentFile is associated 
     with the baseUrl that it is linked to. BeautifulSoup will take the HTML content and use lxml as its main parser, extract all link tags 
@@ -200,31 +186,15 @@ def get_url_content(contentFile,baseUrl):
     linkList = soup.find_all('a')
     outCount = len(linkList)
     for item in linkList:
-        foundUrl = filterCD(item.get('href')) ##f
-        if foundUrl != "/" and foundUrl != "":
+        foundUrl = filterCD(item.get('href'))
+        if foundUrl != None and foundUrl != "/" and foundUrl != "":
             if foundUrl[0:4] != "http" and foundUrl[0:3] != "www":
                 foundUrl = urljoin(baseUrl,foundUrl)
-                GLOBAL_DICT["orig-relative"] += 1
+                analyticsObj.incrementRel()
             links.append(foundUrl)
-    if outCount > COUNTER["count"]:
-                COUNTER["url"] = baseUrl
-                COUNTER["count"] = outCount
+    analyticsObj.resetUrl(baseUrl,outCount)
     return links
 def extract_next_links(rawDatas):
-    validStatusCodes = [200,301,302,307]
-    outputLinks = list()
-    for data in rawDatas:
-        if data.http_code not in validStatusCodes:
-            data.bad_url = True
-            GLOBAL_DICT["invalids"] += 1 
-        else:
-            baseUrl = data.url
-            splitDomains(baseUrl)
-            if data.is_redirected == True:
-                GLOBAL_DICT["redirects"] += 1
-                baseUrl = data.final_url
-            otherLinks = get_url_content(data.content,baseUrl)
-            outputLinks += otherLinks
     '''
     rawDatas is a list of objs -> [raw_content_obj1, raw_content_obj2, ....]
     Each obj is of type UrlResponse  declared at L28-42 datamodel/search/datamodel.py
@@ -235,6 +205,24 @@ def extract_next_links(rawDatas):
 
     Suggested library: lxml
     '''
+    global RETRIEVE_COUNTER
+    validStatusCodes = [200,301,302,307]
+    outputLinks = list()
+    for data in rawDatas:
+        baseUrl = data.url
+        ##print(type(data.http_code))
+        ##print(data.http_code)
+        if int(data.http_code) not in validStatusCodes:
+            data.bad_url = True
+            analytics.incrementInvalids()
+        else:
+            if data.is_redirected == True:
+                baseUrl = data.final_url
+                analytics.incrementResets()
+            otherLinks = get_url_content(data.content,baseUrl,analytics)
+            RETRIEVE_COUNTER += 1
+            outputLinks += otherLinks
+        analytics.splitDomains(baseUrl)
     return outputLinks
 
 def is_valid(url):
@@ -256,7 +244,7 @@ def is_valid(url):
 ##        return False
     try:
         return ".ics.uci.edu" in parsed.hostname \
-            and not re.match(".*\.(css|js|bmp|gif|jpe?g|ico" + "|png|tiff?|mid|mp2|mp3|mp4"\
+            and not re.match(".*\.(css|js|bmp|gif|jpe?g|ico" + "|png|tiff?|mid|mp2|mp3|mp4|java"\
             + "|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf" \
             + "|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso|epub|dll|cnf|tgz|sha1" \
             + "|thmx|mso|arff|rtf|jar|csv"\
