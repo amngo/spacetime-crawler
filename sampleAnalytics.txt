@@ -1,0 +1,22 @@
+Making a crawler log on 5 - 9 - 2017 at Time 12 : 59 
+Subdomain Logs
+Domain/Subdomain: .doorway.com           Frequency: 1
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 1
+Domain/Subdomain: .edu                   Frequency: 549
+Domain/Subdomain: .ics.uci.edu           Frequency: 549
+Domain/Subdomain: .uci.edu               Frequency: 549
+Domain/Subdomain: .com                   Frequency: 1
+Total Redirects:  1
+Invalid URLs:  0 in total.
+Non-absolute Urls Crawled:  49
+Top url is:  http://www.ics.uci.edu/~eppstein/pubs/2001.html at 47 outlinks.
+Making a crawler log on 5 - 10 - 2017 at Time 13 : 47 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 745
+Domain/Subdomain: .uci.edu               Frequency: 745
+Domain/Subdomain: .edu                   Frequency: 745
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 2
+Total Redirects:  1
+Invalid URLs:  0 in total.
+Non-absolute Urls Crawled:  2446
+Top url is:  http://fano.ics.uci.edu/cites/Publication/ at 2407 outlinks.
