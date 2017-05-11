@@ -51,3 +51,15 @@ Total Redirects:  100
 Invalid URLs:  342 in total.
 Non-absolute Urls Crawled:  27440
 Top url is:  http://fano.ics.uci.edu/cites/URL/ at 2172 outlinks.
+Making a crawler log on 5 - 11 - 2017 at Time 9 : 35 
+Subdomain Logs
+Domain/Subdomain: .ugradforms.ics.uci.edu Frequency: 1
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 3
+Domain/Subdomain: .edu                   Frequency: 3006
+Domain/Subdomain: .ics.uci.edu           Frequency: 3006
+Domain/Subdomain: .uci.edu               Frequency: 3006
+Domain/Subdomain: .intranet.ics.uci.edu  Frequency: 1
+Total Redirects:  1
+Invalid URLs:  7 in total.
+Non-absolute Urls Crawled:  254246
+Top url is:  http://www.ics.uci.edu/ugrad/QA_Petitions.php/ugrad/sao/policies/sao/sao/sao/policies/degrees/courses/resources/index.php at 129 outlinks.
