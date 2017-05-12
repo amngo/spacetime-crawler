@@ -1,3 +1,11 @@
+## Team information CS121: IR; Undergraduates; Spring 2017
+## Joshua Pascascio, jpascasc@uci.edu, ID: 52192782
+## Miguel Tolosa , tolosam@uci.edu, ID: 30392887
+## Chang Shin Lee , changsl3@uci.edu, ID: 45754269
+
+Crawler Statistics and Analytics Log File
+
+
 Making a crawler log on 5 - 10 - 2017 at Time 13 : 36 
 Subdomain Logs
 Domain/Subdomain: .ics.uci.edu           Frequency: 742
