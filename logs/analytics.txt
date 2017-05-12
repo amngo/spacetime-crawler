@@ -1,0 +1,136 @@
+Making a crawler log on 5 - 10 - 2017 at Time 13 : 36 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 742
+Domain/Subdomain: .uci.edu               Frequency: 742
+Domain/Subdomain: .edu                   Frequency: 742
+Total Redirects:  0
+Invalid URLs:  0 in total.
+Non-absolute Urls Crawled:  63236
+Top url is:  http://www.ics.uci.edu//ugrad/QA_Graduation/computing/account/sao/Course_updates.phpresources/index.phpdegrees/sao/degrees/computing/account/policies/resources/sao/degrees/courses/index.php at 127 outlinks.
+Making a crawler log on 5 - 10 - 2017 at Time 18 : 6 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 1182
+Domain/Subdomain: .uci.edu               Frequency: 1182
+Domain/Subdomain: .edu                   Frequency: 1182
+Total Redirects:  0
+Invalid URLs:  1 in total.
+Non-absolute Urls Crawled:  100751
+Top url is:  http://www.ics.uci.edu//ugrad/QA_Graduation/degrees/sao/resources/computing/account/courses/degrees/computing/account/ugrad/faculty/highlights/about/annualreport/grad/funding/QA_After_Graduation.php at 129 outlinks.
+Making a crawler log on 5 - 10 - 2017 at Time 22 : 48 
+Subdomain Logs
+Domain/Subdomain: .pasteur.ics.uci.edu   Frequency: 1
+Domain/Subdomain: .evoke.ics.uci.edu     Frequency: 1
+Domain/Subdomain: .edu                   Frequency: 2172
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 1167
+Domain/Subdomain: .sdcl.ics.uci.edu      Frequency: 13
+Domain/Subdomain: .jujube.ics.uci.edu    Frequency: 1
+Domain/Subdomain: .computableplant.ics.uci.edu Frequency: 3
+Domain/Subdomain: .emj.ics.uci.edu       Frequency: 3
+Domain/Subdomain: .i-sensorium.ics.uci.edu Frequency: 1
+Domain/Subdomain: .psearch.ics.uci.edu   Frequency: 1
+Domain/Subdomain: .awareness.ics.uci.edu Frequency: 1
+Domain/Subdomain: .flamingo.ics.uci.edu  Frequency: 12
+Domain/Subdomain: .ironwood.ics.uci.edu  Frequency: 1
+Domain/Subdomain: .alumni.ics.uci.edu    Frequency: 1
+Domain/Subdomain: .uci.edu               Frequency: 2172
+Domain/Subdomain: .asterix.ics.uci.edu   Frequency: 1
+Domain/Subdomain: .sprout.ics.uci.edu    Frequency: 1
+Domain/Subdomain: .se.ics.uci.edu        Frequency: 2
+Domain/Subdomain: .ics.uci.edu           Frequency: 2171
+Domain/Subdomain: .vision.ics.uci.edu    Frequency: 16
+Domain/Subdomain: .emj-pc.ics.uci.edu    Frequency: 1
+Domain/Subdomain: .graphics.ics.uci.edu  Frequency: 1
+Domain/Subdomain: .cs.uci.edu            Frequency: 1
+Total Redirects:  100
+Invalid URLs:  342 in total.
+Non-absolute Urls Crawled:  27440
+Top url is:  http://fano.ics.uci.edu/cites/URL/ at 2172 outlinks.
+Making a crawler log on 5 - 11 - 2017 at Time 8 : 40 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 0
+Domain/Subdomain: .uci.edu               Frequency: 0
+Domain/Subdomain: .edu                   Frequency: 0
+Total Redirects:  0
+Invalid URLs:  0 in total.
+Non-absolute Urls Crawled:  0
+Top url is:   at 0 outlinks.
+Making a crawler log on 5 - 11 - 2017 at Time 9 : 35 
+Subdomain Logs
+Domain/Subdomain: .ugradforms.ics.uci.edu Frequency: 1
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 3
+Domain/Subdomain: .edu                   Frequency: 3006
+Domain/Subdomain: .ics.uci.edu           Frequency: 3006
+Domain/Subdomain: .uci.edu               Frequency: 3006
+Domain/Subdomain: .intranet.ics.uci.edu  Frequency: 1
+Total Redirects:  1
+Invalid URLs:  7 in total.
+Non-absolute Urls Crawled:  254246
+Top url is:  http://www.ics.uci.edu/ugrad/QA_Petitions.php/ugrad/sao/policies/sao/sao/sao/policies/degrees/courses/resources/index.php at 129 outlinks.
+Making a crawler log on 5 - 11 - 2017 at Time 20 : 50 
+Subdomain Logs
+Domain/Subdomain: .sli.ics.uci.edu       Frequency: 1
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 17
+Domain/Subdomain: .edu                   Frequency: 28
+Domain/Subdomain: .ics.uci.edu           Frequency: 28
+Domain/Subdomain: .uci.edu               Frequency: 28
+Domain/Subdomain: .archive.ics.uci.edu   Frequency: 7
+Total Redirects:  10
+Invalid URLs:  5 in total.
+Non-absolute Urls Crawled:  501
+Top url is:  http://fano.ics.uci.edu/cites/Author/David-Eppstein.html at 224 outlinks.
+Making a crawler log on 5 - 11 - 2017 at Time 20 : 57 
+Subdomain Logs
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 87
+Domain/Subdomain: .vision.ics.uci.edu    Frequency: 1
+Domain/Subdomain: .edu                   Frequency: 96
+Domain/Subdomain: .ngs.ics.uci.edu       Frequency: 1
+Domain/Subdomain: .ics.uci.edu           Frequency: 96
+Domain/Subdomain: .uci.edu               Frequency: 96
+Domain/Subdomain: .graphmod.ics.uci.edu  Frequency: 1
+Total Redirects:  11
+Invalid URLs:  23 in total.
+Non-absolute Urls Crawled:  155
+Top url is:  http://fano.ics.uci.edu/ca/rules/b01234568s12356/ at 25 outlinks.
+Making a crawler log on 5 - 11 - 2017 at Time 21 : 19 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 232
+Domain/Subdomain: .uci.edu               Frequency: 232
+Domain/Subdomain: .edu                   Frequency: 232
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 232
+Total Redirects:  0
+Invalid URLs:  47 in total.
+Non-absolute Urls Crawled:  462
+Top url is:  http://fano.ics.uci.edu//cites/Document/Simplification-Envelopes.html at 25 outlinks.
+Making a crawler log on 5 - 12 - 2017 at Time 6 : 15 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 306
+Domain/Subdomain: .uci.edu               Frequency: 306
+Domain/Subdomain: .edu                   Frequency: 306
+Domain/Subdomain: .flamingo.ics.uci.edu  Frequency: 1
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 303
+Total Redirects:  1
+Invalid URLs:  60 in total.
+Non-absolute Urls Crawled:  672
+Top url is:  http://fano.ics.uci.edu//cites/Document/Diameter-and-treewidth-in-minor-closed-graph-families.html at 37 outlinks.
+Making a crawler log on 5 - 12 - 2017 at Time 7 : 11 
+Subdomain Logs
+Domain/Subdomain: .ics.uci.edu           Frequency: 1
+Domain/Subdomain: .uci.edu               Frequency: 1
+Domain/Subdomain: .edu                   Frequency: 1
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 1
+Total Redirects:  0
+Invalid URLs:  0 in total.
+Non-absolute Urls Crawled:  62
+Top url is:   at 0 outlinks.
+Making a crawler log on 5 - 12 - 2017 at Time 9 : 46 
+Subdomain Logs
+Domain/Subdomain: .ics.ics.uci.edu       Frequency: 2
+Domain/Subdomain: .fano.ics.uci.edu      Frequency: 37
+Domain/Subdomain: .edu                   Frequency: 3049
+Domain/Subdomain: .ngs.ics.uci.edu       Frequency: 1
+Domain/Subdomain: .ics.uci.edu           Frequency: 3049
+Domain/Subdomain: .uci.edu               Frequency: 3049
+Total Redirects:  2
+Invalid URLs:  43 in total.
+Non-absolute Urls Crawled:  220000
+Top url is:  http://www.ics.uci.edu/~eppstein/junkyard/polytope.html at 199 outlinks.
