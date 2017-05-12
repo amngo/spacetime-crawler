@@ -4,7 +4,10 @@ Created on Oct 21, 2016
 
 @author: Rohan Achar
 '''
-
+## Team information UC Irvine CS121: IR; Undergraduates; Spring 2017
+## Joshua Pascascio, jpascasc@uci.edu, ID: 52192782
+## Miguel Tolosa , tolosam@uci.edu, ID: 30392887
+## Chang Shin Lee , changsl3@uci.edu, ID: 45754269
 import logging
 import logging.handlers
 import os
@@ -68,10 +71,5 @@ if __name__== "__main__":
     except:
         print("OS or Keyboard Interrupt")
     finally:
-        print("DONE")
-        print(applications.search.crawler_frame.analytics.mainDict)
-        print(applications.search.crawler_frame.analytics.domains)
-        print(applications.search.crawler_frame.analytics.maxUrl)
-        print(applications.search.crawler_frame.analytics.MAXCOUNT)
-        print(applications.search.crawler_frame.RETRIEVE_COUNTER)
+        print("DONE with Web Crawl")
         applications.search.crawler_frame.makeOutputFile("spacetime-crawler/logs/analytics.txt",applications.search.crawler_frame.analytics)
