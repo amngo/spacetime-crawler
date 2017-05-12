@@ -111,9 +111,13 @@ def rejoin(domainList):
         answer = baseStr[0:(len(baseStr) - 1)]
         return answer
 def splitDomains(url,reference):
-        baseUrl = url.split("/")[2].strip("www.") ###Separate directories and retrieve base url
+    try:
+        baseUrlList = url.split("/")
+        baseUrl = baseUrlList[2].strip("www.")###Separate directories and retrieve base url
         subdomains = baseUrl.split(".") ### Split into subdomain list
         logtoDict(subdomains,reference)
+    except:
+        print(baseUrlList)
 def logtoDict(domainList,reference):
         end = len(domainList)
         for i in range(end,-1,-1):
@@ -138,16 +142,13 @@ def filterCD(url):
     '''
     Filter out ../ string url string, the return string is a string that contains all of the url before the first "../" expression
     '''
-    try:
-        filter_exp = r'\.\./' 
-        matchObj = re.search(filter_exp,url) ##Check if url has expression
-        if matchObj == None: ##If not return original and do not modifiy
-            return url
-        else: ##If it does,  only return the part of the url UP TO that expression token.
-            newUrl = url[0:matchObj.start()]
-            return newUrl
-    except TypeError:
+    filter_exp = r'\.\./' 
+    matchObj = re.search(filter_exp,url) ##Check if url has expression
+    if matchObj == None: ##If not return original and do not modifiy
         return url
+    else: ##If it does,  only return the part of the url UP TO that expression token.
+        newUrl = url[0:matchObj.start()]
+        return newUrl
 def makeOutputFile(fileName,obj):
     '''
     Once all url's have been crawled. Use the global crawling dictionary and the url dictionary containing number of outlinks per url.
@@ -182,16 +183,23 @@ def get_url_content(contentFile,baseUrl,analyticsObj):
     stripChars = "../"
     splitExceptions = ["/",""]
     links = []
+    domain = baseUrl.split("/")[2].strip("www.")
+    domain = "http://" + domain
     soup = BeautifulSoup(contentFile,"lxml")
     linkList = soup.find_all('a')
     outCount = len(linkList)
     for item in linkList:
-        foundUrl = filterCD(item.get('href'))
-        if foundUrl != None and foundUrl != "/" and foundUrl != "":
-            if foundUrl[0:4] != "http" and foundUrl[0:3] != "www":
-                foundUrl = urljoin(baseUrl,foundUrl)
-                analyticsObj.incrementRel()
-            links.append(foundUrl)
+        foundUrl = item.get('href')
+        if type(foundUrl) == str:
+            foundUrl = filterCD(foundUrl)
+            if foundUrl != None and foundUrl != "/" and foundUrl != "":
+                if foundUrl[0:4] != "http" and foundUrl[0:3] != "www":
+                    if foundUrl[0] == "/":
+                        foundUrl = urljoin(domain,foundUrl)
+                    else:
+                        foundUrl = urljoin(baseUrl,foundUrl)
+                    analyticsObj.incrementRel()
+                links.append(foundUrl)
     analyticsObj.resetUrl(baseUrl,outCount)
     return links
 def extract_next_links(rawDatas):
@@ -212,7 +220,7 @@ def extract_next_links(rawDatas):
         baseUrl = data.url
         ##print(type(data.http_code))
         ##print(data.http_code)
-        if int(data.http_code) not in validStatusCodes:
+        if type(data.http_code) != str or int(data.http_code) not in validStatusCodes:
             data.bad_url = True
             analytics.incrementInvalids()
         else:
