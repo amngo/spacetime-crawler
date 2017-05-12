@@ -3,7 +3,7 @@ The crawler apps using spacetime library
 
 ## Contributors 
 Information such as ID and email can be found in <em>crawler_frame.py, crawler.py, GlobalAnalytics.py, and logs/analytics.txt.
-Also can find via <strong>Contributors</strong>
+Also can find via <a href="https://github.com/joshpas64/spacetime-crawler/graphs/contributors" target="_blank" title="github contributors"><strong>Contributors</strong></a>
 * Joshua Pascascio
 * Miguel Tolosa
 * Chang Shin Lee
