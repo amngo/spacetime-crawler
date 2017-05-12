@@ -1,6 +1,13 @@
 # spacetime-crawler
 The crawler apps using spacetime library 
 
+## Contributors 
+Information such as ID and email can be found in <em>crawler_frame.py, crawler.py, GlobalAnalytics.py, and logs/analytics.txt.
+Also can find via <strong>Contributors</strong>
+* Joshua Pascascio
+* Miguel Tolosa
+* Chang Shin Lee
+
 ## Installation 
 * Use Python 2.7
 * If you have pip installed already install. Then in this sequence 
