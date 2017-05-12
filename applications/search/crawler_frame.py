@@ -9,7 +9,11 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import GlobalAnalytics
 ## Above import is to make a unique log header for each file
-##GLOBAL Logging Dictionary variables
+##Discussion Group Section 1 - Group 19 Member Info:
+##Name, email , id's
+## Joshua Pascascio, jpascasc@uci.edu, ID: 52192782
+## Miguel Tolosa , tolosam@uci.edu, ID: 30392887
+## Chang Shin Lee , changsl3@uci.edu, ID: 45754269
 
 try:
     # For python 2
