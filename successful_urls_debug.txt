@@ -1,0 +1,2 @@
+Debug used from command line options -a amazon.ics.uci.edu -p 9050
+Actual production port is 9100
