@@ -2,7 +2,10 @@ GLOBAL_DICT = {"invalids":0,"redirects":0,"orig-relative":0}
 SUBDOMAINS = {".edu":0,".uci.edu":0,".ics.uci.edu":0}
 COUNTER = {"url":"","count":0}
 MAXCOUNT = 0
-
+## Team information CS121: IR; Undergraduates; Spring 2017
+## Joshua Pascascio, jpascasc@uci.edu, ID: 52192782
+## Miguel Tolosa , tolosam@uci.edu, ID: 30392887
+## Chang Shin Lee , changsl3@uci.edu, ID: 45754269
 def countDomains(domain):
     '''
     Count the amount of subdomains in a url String. A subdomain denoted by a "." in baseUrl
