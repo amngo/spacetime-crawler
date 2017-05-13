@@ -23,9 +23,6 @@ except ImportError:
     from urllib.parse import urlparse, parse_qs
 
 analytics = GlobalAnalytics.AnalyticsObject()
-COUNTER = {"url":"","count":0}
-SUBDOMAINS = {}
-GLOBAL_DICT = {"invalids":0,"orig-relative":0,"redirects":0}
 logger = logging.getLogger(__name__)
 RETRIEVE_COUNTER = 0
 LOG_HEADER = "[CRAWLER]"
@@ -98,39 +95,24 @@ def process_url_group(group, useragentstr):
 '''
 STUB FUNCTIONS TO BE FILLED OUT BY THE STUDENT.
 '''
-def countDomains(domain):
+def reParseUrl(urlString):
     '''
-    Count the amount of subdomains in a url String. A subdomain denoted by a "." in baseUrl
+    Remove trailing or duplicate "/" characters after https:// prefix from url strings
     '''
-    count = 0
-    for i in domain:
-        if i == ".":
-            count += 1
-    return count
-def rejoin(domainList):
-        baseStr = ""
-        for i in domainList:
-            baseStr += (i + ".")
-        baseStr = "." + baseStr
-        answer = baseStr[0:(len(baseStr) - 1)]
-        return answer
-def splitDomains(url,reference):
-    try:
-        baseUrlList = url.split("/")
-        baseUrl = baseUrlList[2].strip("www.")###Separate directories and retrieve base url
-        subdomains = baseUrl.split(".") ### Split into subdomain list
-        logtoDict(subdomains,reference)
-    except:
-        print(baseUrlList)
-def logtoDict(domainList,reference):
-        end = len(domainList)
-        for i in range(end,-1,-1):
-            rejoined = rejoin(domainList[i : end])
-            if rejoined != '':
-                if rejoined in reference.domains:
-                    reference.domains[rejoined] += 1
-                else:
-                    reference.domains[rejoined] = 1
+    urlList = urlString.split("/")
+    if len(urlList) < 3:
+        return urlString
+    stopIndex = urlString.index(urlList[2])
+    suffix = urlString[stopIndex:]
+    resultUrl = urlString[:stopIndex] + re.sub(r'/+',"/",suffix)
+    return resultUrl
+def filterID(url):
+    matchObj = re.search(r'#',url)
+    if matchObj == None:
+        return url
+    else:
+        newUrl = url[0:matchObj.start()]
+        return newUrl
 def checkforTrap(url):
     '''
     Checks for crawler traps in the url usually contained by having "/data/directory/data/directory/data/directory/data/directory/data/directory/"
@@ -196,6 +178,8 @@ def get_url_content(contentFile,baseUrl,analyticsObj):
         foundUrl = item.get('href')
         if type(foundUrl) == str:
             foundUrl = filterCD(foundUrl)
+            ##foundUrl = filterID(foundUrl)
+            ##foundUrl = reParseUrl(foundUrl)
             if foundUrl != None and foundUrl != "/" and foundUrl != "":
                 if foundUrl[0:4] != "http" and foundUrl[0:3] != "www":
                     if foundUrl[0] == "/":
